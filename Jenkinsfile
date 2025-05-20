@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.10'
+            args '-u root' // optional, allows package install if needed
+        }
+    }
 
     environment {
         IMAGE_NAME = 'vinayraj6300/my-python-app'
@@ -16,7 +21,7 @@ pipeline {
         stage('Install Python Dependencies') {
             steps {
                 sh '''
-                    python3 -m venv venv
+                    python -m venv venv
                     . venv/bin/activate
                     pip install -r requirements.txt
                 '''
@@ -41,3 +46,4 @@ pipeline {
         }
     }
 }
+
